@@ -1,13 +1,15 @@
 package service
 
 import (
+	"swistory/db"
 	"swistory/model"
 )
 
 type MenuService struct{}
 
 func (MenuService) SetMenu(menu *model.Menu) error {
-	_, err := DbEngine.Insert(menu)
+	db := db.GetDB()
+	err := db.Create(&menu).Error
 	if err != nil {
 		return err
 	}
@@ -16,26 +18,28 @@ func (MenuService) SetMenu(menu *model.Menu) error {
 
 func (MenuService) GetMenuList() []model.Menu {
 	tests := make([]model.Menu, 0)
-	err := DbEngine.Distinct("id", "level", "aim", "description").Limit(10, 0).Find(&tests)
-	if err != nil {
-		panic(err)
+	db := db.GetDB()
+	result := db.Distinct("id", "level", "aim", "description").Limit(10).Find(&tests)
+	if result.Error != nil {
+		panic(result.Error)
 	}
 	return tests
 }
 
 func (MenuService) UpdateMenu(newMenu *model.Menu) error {
-	_, err := DbEngine.Id(newMenu.Id).Update(newMenu)
-	if err != nil {
-		return err
+	db := db.GetDB()
+	result := db.First(&newMenu)
+	if result.Error != nil {
+		return result.Error
 	}
 	return nil
 }
 
 func (MenuService) DeleteMenu(id int) error {
-	menu := new(model.Menu)
-	_, err := DbEngine.Id(id).Delete(menu)
-	if err != nil {
-		return err
+	db := db.GetDB()
+	result := db.Delete(&model.Menu{}, id)
+	if result.Error != nil {
+		return result.Error
 	}
 	return nil
 }

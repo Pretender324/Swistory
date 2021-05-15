@@ -14,15 +14,25 @@ func main() {
 	engine.Use(middleware.RecordUaAndTime)
 	db.Init()
 
-	menuEngine := engine.Group("/menu")
+	v1 := engine.Group("/v1")
 	{
-		v1 := menuEngine.Group("/v1")
+		menuEngine := v1.Group("/menu")
 		{
-			v1.POST("/add", controller.MenuAdd)
-			v1.GET("/list", controller.MenuList)
-			v1.PUT("/update", controller.MenuUpdate)
-			v1.DELETE("/delete", controller.MenuDelete)
+			menuEngine.POST("/add", controller.MenuAdd)
+			menuEngine.GET("/list", controller.MenuList)
+			menuEngine.PUT("/update", controller.MenuUpdate)
+			menuEngine.DELETE("/delete", controller.MenuDelete)
+
 		}
+		userEngine := v1.Group("/user")
+		{
+			userEngine.POST("/add", controller.UserAdd)
+			userEngine.GET("/list", controller.UserList)
+			userEngine.PUT("/update", controller.UserUpdate)
+			userEngine.DELETE("/delete", controller.UserDelete)
+
+		}
+
 	}
 	engine.Run(":5000") // listen and serve on 0.0.0.0:8080
 }

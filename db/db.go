@@ -2,19 +2,37 @@ package db
 
 import (
 	"fmt"
+	"os"
 	"swistory/model"
 
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var (
-	db  *gorm.DB
-	err error
+	db *gorm.DB
 )
 
 func Init() {
-	dsn := "Pretender324:Riku0324#@unix(/tmp/mysql.sock)/swistory?charset=utf8"
+
+	if gin.Mode() == "debug" {
+		os.Setenv("GO_ENV", "development")
+	}
+
+	err := godotenv.Load(fmt.Sprintf("./.env.%s", os.Getenv("GO_ENV")))
+	if err != nil {
+		// .env読めなかった場合の処理
+		panic(err.Error())
+	}
+
+	DB_USER := os.Getenv("DB_USER")
+	DB_PASS := os.Getenv("DB_PASS")
+	DB_PORT := os.Getenv("DB_PORT")
+	DB_NAME := os.Getenv("DB_NAME")
+
+	dsn := DB_USER + ":" + DB_PASS + "@" + DB_PORT + "/" + DB_NAME + "?charset=utf8"
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err.Error())

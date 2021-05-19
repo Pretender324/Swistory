@@ -3,17 +3,31 @@ package service
 import (
 	"swistory/api/db"
 	"swistory/api/model"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService struct{}
 
-func (UserService) SetUser(user *model.User) error {
+func (UserService) CreateUser(user *model.User) error {
 	db := db.GetDB()
+	hashed, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+	user.Password = string(hashed)
 	err := db.Create(&user).Error
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (UserService) GetUser(email string) model.User {
+	var test model.User
+	db := db.GetDB()
+	result := db.Where("email = ?", email).First(&test)
+	if result.Error != nil {
+		panic(result.Error)
+	}
+	return test
 }
 
 func (UserService) GetUserList() []model.User {

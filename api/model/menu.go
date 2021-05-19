@@ -23,14 +23,6 @@ type Practice struct {
 	Description string
 }
 
-type User struct {
-	gorm.Model
-	Name    string
-	Sex     string
-	Email   string
-	GroupID uint
-}
-
 type Group struct {
 	gorm.Model
 	Name  string

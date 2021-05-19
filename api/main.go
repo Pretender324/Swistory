@@ -26,7 +26,8 @@ func main() {
 		}
 		userEngine := v1.Group("/user")
 		{
-			userEngine.POST("/add", controller.UserAdd)
+			userEngine.POST("/signup", controller.UserAdd)
+			userEngine.POST("/login", controller.UserLogin)
 			userEngine.GET("/list", controller.UserList)
 			userEngine.PUT("/update", controller.UserUpdate)
 			userEngine.DELETE("/delete", controller.UserDelete)

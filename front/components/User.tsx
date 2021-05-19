@@ -2,7 +2,6 @@ import {
     Avatar,
     Container,
     createStyles,
-    Grid,
     makeStyles,
     Theme,
     Typography,
@@ -13,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             textAlign: 'center',
+            marginTop: '100px',
         },
         small: {
             width: theme.spacing(3),
@@ -37,7 +37,7 @@ export default function User() {
     return (
         <Container maxWidth="lg" className={classes.root}>
             <Avatar className={classes.large}></Avatar>
-            <Typography variant="h2">"User name"</Typography>
+            <Typography variant="h2">User name</Typography>
         </Container>
     )
 }

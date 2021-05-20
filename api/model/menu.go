@@ -22,10 +22,3 @@ type Practice struct {
 	OnTime      string
 	Description string
 }
-
-type Group struct {
-	gorm.Model
-	Name  string
-	Users []User
-	Menus []Menu
-}

@@ -1,8 +1,8 @@
 package service
 
 import (
-	"swistory/api/db"
-	"swistory/api/model"
+	"swistory/api/src/db"
+	"swistory/api/src/model"
 )
 
 type GroupService struct{}

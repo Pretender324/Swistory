@@ -1,9 +1,9 @@
 package main
 
 import (
-	"swistory/api/controller"
-	"swistory/api/db"
-	"swistory/api/middleware"
+	"swistory/api/src/controller"
+	"swistory/api/src/db"
+	"swistory/api/src/middleware"
 
 	"github.com/gin-gonic/gin"
 	_ "gorm.io/driver/mysql"

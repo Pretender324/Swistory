@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 	"os"
-	"swistory/api/src/model"
+	"swistory/api/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"

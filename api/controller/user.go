@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"swistory/api/src/model"
-	"swistory/api/src/service"
+	"swistory/api/model"
+	"swistory/api/service"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"

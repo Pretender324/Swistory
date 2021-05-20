@@ -1,8 +1,8 @@
 package service
 
 import (
-	"swistory/api/src/db"
-	"swistory/api/src/model"
+	"swistory/api/db"
+	"swistory/api/model"
 )
 
 type MenuService struct{}

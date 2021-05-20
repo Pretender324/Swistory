@@ -3,48 +3,21 @@ package controller
 import (
 	"net/http"
 	"strconv"
-	"swistory/api/src/model"
-	"swistory/api/src/service"
+	"swistory/api/model"
+	"swistory/api/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GroupAdd(c *gin.Context) {
-	group := model.Group{}
-	err := c.Bind(&group)
+func MenuAdd(c *gin.Context) {
+	menu := model.Menu{}
+	err := c.Bind(&menu)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	groupService := service.GroupService{}
-	err = groupService.SetGroup(&group)
-	if err != nil {
-		c.String(http.StatusInternalServerError, "Server Error", err)
-		return
-	}
-	c.JSON(http.StatusCreated, gin.H{
-		"status": "ok",
-	})
-}
-
-func GroupList(c *gin.Context) {
-	GroupService := service.GroupService{}
-	GroupLists := GroupService.GetGroupList()
-	c.JSONP(http.StatusOK, gin.H{
-		"message": "ok",
-		"data":    GroupLists,
-	})
-}
-
-func GroupUpdate(c *gin.Context) {
-	group := model.Group{}
-	err := c.Bind(&group)
-	if err != nil {
-		c.String(http.StatusBadRequest, "Bad request")
-		return
-	}
-	groupService := service.GroupService{}
-	err = groupService.UpdateGroup(&group)
+	menuService := service.MenuService{}
+	err = menuService.SetMenu(&menu)
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
 		return
@@ -54,15 +27,42 @@ func GroupUpdate(c *gin.Context) {
 	})
 }
 
-func GroupDelete(c *gin.Context) {
+func MenuList(c *gin.Context) {
+	menuService := service.MenuService{}
+	MenuLists := menuService.GetMenuList()
+	c.JSONP(http.StatusOK, gin.H{
+		"message": "ok",
+		"data":    MenuLists,
+	})
+}
+
+func MenuUpdate(c *gin.Context) {
+	menu := model.Menu{}
+	err := c.Bind(&menu)
+	if err != nil {
+		c.String(http.StatusBadRequest, "Bad request")
+		return
+	}
+	menuService := service.MenuService{}
+	err = menuService.UpdateMenu(&menu)
+	if err != nil {
+		c.String(http.StatusInternalServerError, "Server Error")
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{
+		"status": "ok",
+	})
+}
+
+func MenuDelete(c *gin.Context) {
 	id := c.PostForm("id")
 	intId, err := strconv.ParseInt(id, 10, 0)
 	if err != nil {
 		c.String(http.StatusBadRequest, "Bad request")
 		return
 	}
-	groupService := service.GroupService{}
-	err = groupService.DeleteGroup(int(intId))
+	menuService := service.MenuService{}
+	err = menuService.DeleteMenu(int(intId))
 	if err != nil {
 		c.String(http.StatusInternalServerError, "Server Error")
 		return

@@ -6,12 +6,14 @@ import {
   ListItem,
   makeStyles,
   Theme,
-  Typography,
 } from '@material-ui/core'
 import gql from 'graphql-tag'
 import Head from 'next/head'
 import User from 'components/User'
 import { MenuHeading } from 'components/Menu'
+import { Pagination } from '@material-ui/lab'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,20 +21,15 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
       minHeight: '100vh',
     },
-    small: {
-      width: theme.spacing(3),
-      height: theme.spacing(3),
-    },
-    large: {
-      margin: '0 auto 20px',
-      width: theme.spacing(10),
-      height: theme.spacing(10),
-    },
     title: {
       textAlign: 'left',
     },
     content: {
       marginBottom: '20px',
+      textAlign: 'center',
+    },
+    pagination: {
+      display: 'inline-block',
     },
   })
 )
@@ -59,13 +56,28 @@ type Menu = {
   description: string
 }
 
+const perPage = 10
+
 export default function Home() {
   const classes = useStyles()
   const { loading, error, data } = useQuery(LIST_MENU)
+  const [displayMenus, setDisplayMenus] = useState<Menu[]>()
+
+  const allMenus = data ? data.menus : null
+
+  useEffect(() => {
+    if (allMenus) {
+      setDisplayMenus(allMenus.slice(0, perPage))
+    }
+  }, [data])
+
+  const handlePaginate = (e: object, currentPage: number) => {
+    setDisplayMenus(
+      allMenus.slice(perPage * (currentPage - 1), perPage * currentPage)
+    )
+  }
 
   if (!data || loading) return <p>Loading...</p>
-
-  const menus: Menu[] = data.menus
 
   return (
     <div className={classes.root}>
@@ -82,12 +94,17 @@ export default function Home() {
       <Grid container justify="center" className={classes.content}>
         <Grid item xs={12} md={8}>
           <List>
-            {menus.map((menu) => (
+            {displayMenus?.map((menu) => (
               <ListItem>
                 <MenuHeading menu={menu} />
               </ListItem>
             ))}
           </List>
+          <Pagination
+            count={10}
+            onChange={handlePaginate}
+            className={classes.pagination}
+          />
         </Grid>
       </Grid>
     </div>

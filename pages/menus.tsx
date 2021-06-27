@@ -10,7 +10,8 @@ import {
 } from '@material-ui/core'
 import gql from 'graphql-tag'
 import Head from 'next/head'
-import User from '../components/User'
+import User from 'components/User'
+import { MenuHeading } from 'components/Menu'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -43,6 +44,11 @@ const LIST_MENU = gql`
       level
       aim
       description
+      createdAt
+      group {
+        id
+        name
+      }
     }
   }
 `
@@ -77,7 +83,9 @@ export default function Home() {
         <Grid item xs={12} md={8}>
           <List>
             {menus.map((menu) => (
-              <ListItem>{menu.id}</ListItem>
+              <ListItem>
+                <MenuHeading menu={menu} />
+              </ListItem>
             ))}
           </List>
         </Grid>
